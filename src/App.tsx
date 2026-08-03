@@ -89,6 +89,7 @@ export default function App() {
 
   // Initial Sync from GitHub API for initial repos on first render
   useEffect(() => {
+    if (INITIAL_REPOS.length === 0) return;
     const syncInitialRepos = async () => {
       setIsRefreshing(true);
       const updatedSetups = [...setups];
@@ -155,9 +156,9 @@ export default function App() {
   };
 
   const handleResetDefaults = () => {
-    setSetups(FALLBACK_SETUPS);
+    setSetups([]);
     localStorage.removeItem(LOCAL_STORAGE_KEY);
-    showToast('Reset repository list to defaults');
+    showToast('Cleared repository list');
   };
 
   const handleSimulateDownload = (assetName: string) => {

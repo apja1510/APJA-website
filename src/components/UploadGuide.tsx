@@ -18,7 +18,57 @@ import {
 
 export const UploadGuide: React.FC = () => {
   const [copiedAction, setCopiedAction] = useState(false);
-  const [activeTab, setActiveTab] = useState<'manual' | 'ci'>('manual');
+  const [copiedPagesAction, setCopiedPagesAction] = useState(false);
+  const [activeTab, setActiveTab] = useState<'manual' | 'ci' | 'ghpages'>('manual');
+
+  const githubPagesYaml = `name: Deploy Website to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: \${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Static Site
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4`;
 
   const githubActionYaml = `name: Build & Upload Release
 on:
@@ -54,6 +104,12 @@ jobs:
         env:
           GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}`;
 
+  const handleCopyPagesYaml = () => {
+    navigator.clipboard.writeText(githubPagesYaml);
+    setCopiedPagesAction(true);
+    setTimeout(() => setCopiedPagesAction(false), 2000);
+  };
+
   const handleCopyYaml = () => {
     navigator.clipboard.writeText(githubActionYaml);
     setCopiedYamlState();
@@ -83,7 +139,7 @@ jobs:
       </div>
 
       {/* Mode Selector */}
-      <div className="flex items-center gap-3 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800 w-fit">
+      <div className="flex flex-wrap items-center gap-3 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800 w-fit">
         <button
           onClick={() => setActiveTab('manual')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -93,7 +149,7 @@ jobs:
           }`}
         >
           <Upload className="w-4 h-4" />
-          <span>Manual Upload Guide (5 Clicks)</span>
+          <span>Manual Upload Guide</span>
         </button>
 
         <button
@@ -106,6 +162,18 @@ jobs:
         >
           <Code2 className="w-4 h-4" />
           <span>Automated GitHub Actions CI/CD</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('ghpages')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            activeTab === 'ghpages'
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-amber-300" />
+          <span>Deploy Site to GitHub Pages</span>
         </button>
       </div>
 
@@ -244,6 +312,55 @@ jobs:
             <pre className="p-4 bg-slate-950 border border-slate-800/90 rounded-2xl font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed">
               {githubActionYaml}
             </pre>
+          </div>
+        </div>
+      )}
+
+      {/* GITHUB PAGES DEPLOYMENT TAB */}
+      {activeTab === 'ghpages' && (
+        <div className="space-y-6">
+          <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  Deploying this Site to GitHub Pages
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Automate full website deployment to GitHub Pages using GitHub Actions! Save this file as <code className="text-indigo-300 font-mono">.github/workflows/deploy-pages.yml</code>.
+                </p>
+              </div>
+
+              <button
+                onClick={handleCopyPagesYaml}
+                className="flex items-center gap-2 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl transition-all shadow-md shadow-indigo-600/20 shrink-0"
+              >
+                {copiedPagesAction ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-300" />
+                    <span>Copied Workflow!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4" />
+                    <span>Copy Pages Workflow</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            <pre className="p-4 bg-slate-950 border border-slate-800/90 rounded-2xl font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed">
+              {githubPagesYaml}
+            </pre>
+
+            <div className="p-4 bg-slate-950/80 border border-slate-800 rounded-2xl text-xs space-y-2">
+              <h4 className="font-bold text-slate-200">GitHub Pages Setup Checklist:</h4>
+              <ol className="list-decimal list-inside space-y-1 text-slate-400 font-mono">
+                <li>Go to your GitHub Repository Settings &rarr; Pages</li>
+                <li>Under "Build and deployment", set Source to <strong>"GitHub Actions"</strong></li>
+                <li>Push your code to the <code>main</code> branch!</li>
+              </ol>
+            </div>
           </div>
         </div>
       )}
