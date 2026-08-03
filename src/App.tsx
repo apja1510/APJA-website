@@ -343,205 +343,33 @@ export default function App() {
       )}
 
       {/* Main Content Area */}
-      <main id="software-catalog" className="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main id="software-catalog" className="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* TAB 1: SOFTWARE LIBRARY / CATALOG */}
         {activeTab === 'catalog' && (
           <div className="space-y-6">
-            
-            {/* Search & Filter Bar */}
-            <div className={`p-4 border transition-colors space-y-4 ${
-              isVintage
-                ? 'bg-[#cfcfc4] border-[#191a1c] shadow-md'
-                : 'bg-slate-900/80 border-slate-800 rounded-2xl shadow-lg'
-            }`}>
-              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-                
-                {/* Search Input */}
-                <div className="relative flex-1">
-                  <Search className={`w-4 h-4 absolute left-3.5 top-3 ${isVintage ? 'text-[#191a1c]' : 'text-slate-500'}`} />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search software setups, installers, or repo names..."
-                    className={`w-full pl-10 pr-4 py-2 text-xs font-mono font-medium transition-colors ${
-                      isVintage
-                        ? 'bg-[#dcdcd3] border border-[#191a1c] text-[#191a1c] placeholder-[#191a1c]/60 focus:outline-none focus:ring-1 focus:ring-[#191a1c]'
-                        : 'bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl text-slate-100 placeholder-slate-500'
-                    }`}
-                  />
-                </div>
-
-                {/* Filters Group */}
-                <div className="flex flex-wrap items-center gap-2">
-                  {/* OS Filter */}
-                  <div className={`flex items-center gap-1 p-1 ${
-                    isVintage ? 'bg-[#dcdcd3] border border-[#191a1c]' : 'bg-slate-950 border border-slate-800 rounded-xl'
-                  }`}>
-                    <button
-                      onClick={() => setSelectedOsFilter('all')}
-                      className={`px-3 py-1 text-xs font-mono font-bold transition-all ${
-                        selectedOsFilter === 'all'
-                          ? isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-indigo-600 text-white rounded-lg'
-                          : isVintage ? 'text-[#191a1c] hover:bg-[#191a1c]/10' : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      ALL OS
-                    </button>
-                    <button
-                      onClick={() => setSelectedOsFilter('windows')}
-                      className={`px-2.5 py-1 text-xs font-mono font-bold transition-all ${
-                        selectedOsFilter === 'windows'
-                          ? isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-blue-600 text-white rounded-lg'
-                          : isVintage ? 'text-[#191a1c] hover:bg-[#191a1c]/10' : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      WINDOWS
-                    </button>
-                    <button
-                      onClick={() => setSelectedOsFilter('macos')}
-                      className={`px-2.5 py-1 text-xs font-mono font-bold transition-all ${
-                        selectedOsFilter === 'macos'
-                          ? isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-slate-700 text-white rounded-lg'
-                          : isVintage ? 'text-[#191a1c] hover:bg-[#191a1c]/10' : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      MACOS
-                    </button>
-                    <button
-                      onClick={() => setSelectedOsFilter('linux')}
-                      className={`px-2.5 py-1 text-xs font-mono font-bold transition-all ${
-                        selectedOsFilter === 'linux'
-                          ? isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-amber-600 text-white rounded-lg'
-                          : isVintage ? 'text-[#191a1c] hover:bg-[#191a1c]/10' : 'text-slate-400 hover:text-slate-200'
-                      }`}
-                    >
-                      LINUX
-                    </button>
-                  </div>
-
-                  {/* Sort Selector */}
-                  <div className={`flex items-center gap-1.5 px-3 py-1 text-xs font-mono font-semibold ${
-                    isVintage ? 'bg-[#dcdcd3] border border-[#191a1c] text-[#191a1c]' : 'bg-slate-950 border border-slate-800 rounded-xl text-slate-400'
-                  }`}>
-                    <ArrowUpDown className={`w-3.5 h-3.5 ${isVintage ? 'text-[#191a1c]' : 'text-indigo-400'}`} />
-                    <span>SORT:</span>
-                    <select
-                      value={sortBy}
-                      onChange={(e: any) => setSortBy(e.target.value)}
-                      className={`bg-transparent font-mono font-bold focus:outline-none cursor-pointer ${
-                        isVintage ? 'text-[#191a1c]' : 'text-slate-200'
-                      }`}
-                    >
-                      <option value="downloads" className={isVintage ? 'bg-[#dcdcd3] text-[#191a1c]' : 'bg-slate-900 text-slate-200'}>
-                        MOST DOWNLOADS
-                      </option>
-                      <option value="newest" className={isVintage ? 'bg-[#dcdcd3] text-[#191a1c]' : 'bg-slate-900 text-slate-200'}>
-                        NEWEST RELEASE
-                      </option>
-                      <option value="name" className={isVintage ? 'bg-[#dcdcd3] text-[#191a1c]' : 'bg-slate-900 text-slate-200'}>
-                        NAME (A-Z)
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Category Pills */}
-              {categories.length > 2 && (
-                <div className={`flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin pt-2 border-t ${
-                  isVintage ? 'border-[#191a1c]/20' : 'border-slate-800/60'
-                }`}>
-                  <span className={`text-[11px] font-mono font-bold uppercase tracking-wider mr-1 ${
-                    isVintage ? 'text-[#191a1c]/70' : 'text-slate-500'
-                  }`}>
-                    CATEGORY:
-                  </span>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`px-3 py-1 text-xs font-mono font-bold uppercase transition-all whitespace-nowrap ${
-                        selectedCategory === cat
-                          ? isVintage
-                            ? 'bg-[#191a1c] text-[#dcdcd3] border border-[#191a1c]'
-                            : 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 rounded-lg'
-                          : isVintage
-                            ? 'text-[#191a1c] bg-[#dcdcd3] border border-[#191a1c]/40 hover:bg-[#191a1c]/10'
-                            : 'text-slate-400 hover:text-slate-200 bg-slate-950/60 border border-slate-800 rounded-lg'
-                      }`}
-                    >
-                      {cat === 'all' ? 'All Categories' : cat}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Software Cards Grid */}
-            {filteredSetups.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredSetups.map((setup) => (
-                  <SoftwareCard
-                    key={setup.id}
-                    setup={setup}
-                    onSelect={(s) => setSelectedSetup(s)}
-                    onSimulateDownload={handleSimulateDownload}
-                    themeStyle={themeStyle}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className={`p-12 text-center border space-y-5 ${
-                isVintage
-                  ? 'bg-[#cfcfc4] border-[#191a1c]'
-                  : 'bg-slate-900/60 border-slate-800 rounded-3xl'
-              }`}>
-                <div className={`w-14 h-14 rounded-full flex items-center justify-center mx-auto ${
-                  isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-indigo-600 text-white'
-                }`}>
-                  <Plus className="w-7 h-7" />
-                </div>
-                <div className="space-y-1">
-                  <h3 className={`text-lg font-bold ${isVintage ? 'font-syne text-[#191a1c] uppercase tracking-tight' : 'text-slate-100'}`}>
-                    {setups.length === 0 ? 'NO APPS UPLOADED YET' : 'NO MATCHING SOFTWARE SETUPS'}
-                  </h3>
-                  <p className={`text-xs max-w-md mx-auto ${isVintage ? 'font-space text-[#191a1c]/80 uppercase tracking-wide' : 'text-slate-400'}`}>
-                    {setups.length === 0
-                      ? 'Upload your desktop software installers (.exe, .dmg, .AppImage) by connecting your GitHub Repository!'
-                      : 'Try adjusting your search query or filter settings.'}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {setups.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#191a1c]/20 font-mono text-xs uppercase tracking-wider">
+                  <span className="font-bold text-[#191a1c]">UPLOADED REPOSITORIES ({setups.length})</span>
                   <button
                     onClick={() => setIsAddModalOpen(true)}
-                    className={`px-6 py-3 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-transform active:scale-95 shadow-lg ${
-                      isVintage
-                        ? 'bg-[#191a1c] text-[#dcdcd3] hover:bg-[#2b2d31]'
-                        : 'bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl'
-                    }`}
+                    className="flex items-center gap-1.5 hover:underline font-bold"
                   >
-                    <Plus className="w-4 h-4" />
-                    <span>Upload Your App</span>
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Upload New App</span>
                   </button>
-
-                  {setups.length > 0 && (
-                    <button
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSelectedOsFilter('all');
-                        setSelectedCategory('all');
-                      }}
-                      className={`px-5 py-3 text-xs font-mono font-bold uppercase transition-colors ${
-                        isVintage
-                          ? 'border border-[#191a1c] text-[#191a1c] hover:bg-[#191a1c]/10'
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl'
-                      }`}
-                    >
-                      Clear Filters
-                    </button>
-                  )}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {setups.map((setup) => (
+                    <SoftwareCard
+                      key={setup.id}
+                      setup={setup}
+                      onSelect={(s) => setSelectedSetup(s)}
+                      onSimulateDownload={handleSimulateDownload}
+                      themeStyle={themeStyle}
+                    />
+                  ))}
                 </div>
               </div>
             )}
