@@ -26,22 +26,30 @@ const THEME_KEY = 'setup_hub_theme_style';
 
 export default function App() {
   const [setups, setSetups] = useState<SoftwareSetup[]>(() => {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed: SoftwareSetup[] = JSON.parse(saved);
-        // Filter out default sample apps if present
-        const customOnly = parsed.filter(
-          (s) =>
-            s.id !== 'Heroic-Games-Launcher/HeroicGamesLauncher' &&
-            s.id !== 'tauri-apps/tauri' &&
-            s.id !== 'feditolerant/feditolerant-desktop' &&
-            s.id !== 'myorg/my-awesome-app'
-        );
-        return customOnly;
-      } catch (e) {
-        console.error('Error loading saved setups', e);
+    try {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed
+            .filter(
+              (s) =>
+                s &&
+                s.id &&
+                s.id !== 'Heroic-Games-Launcher/HeroicGamesLauncher' &&
+                s.id !== 'tauri-apps/tauri' &&
+                s.id !== 'feditolerant/feditolerant-desktop' &&
+                s.id !== 'myorg/my-awesome-app'
+            )
+            .map((s) => ({
+              ...s,
+              releases: Array.isArray(s?.releases) ? s.releases : [],
+              totalDownloads: typeof s?.totalDownloads === 'number' ? s.totalDownloads : 0,
+            }));
+        }
       }
+    } catch (e) {
+      console.error('Error loading saved setups', e);
     }
     return [];
   });
