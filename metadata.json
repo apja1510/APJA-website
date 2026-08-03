@@ -1,0 +1,6 @@
+{
+  "name": "Software Release Hub",
+  "description": "A clean, aesthetic dashboard for showcasing software setups hosted on GitHub Releases and tracking live download statistics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

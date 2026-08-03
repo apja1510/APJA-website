@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-syne {
+    font-family: 'Syne', sans-serif;
+  }
+  .font-space {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Vintage Stone Aesthetic Rules */
+.bg-stone-vintage {
+  background-color: #dcdcd3;
+}
+.bg-stone-dark {
+  background-color: #1a1b1d;
+}
+.bg-stone-card {
+  background-color: #d4d4cb;
+}
+.bg-stone-panel {
+  background-color: #c9c8be;
+}
+.text-stone-dark {
+  color: #191a1c;
+}
+.border-stone-dark {
+  border-color: #191a1c;
+}
+
+/* Paper / Subtle Architectural Texture Grid */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(25, 26, 28, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(25, 26, 28, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1b1d;
+}
+::-webkit-scrollbar-thumb {
+  background: #3f4248;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5d616a;
+}
