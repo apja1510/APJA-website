@@ -348,14 +348,13 @@ export default function App() {
         {/* TAB 1: SOFTWARE LIBRARY / CATALOG */}
         {activeTab === 'catalog' && (
           <div className="space-y-6">
-            {/* Software Cards Grid */}
-            {setups.length > 0 && (
+            {setups.length > 0 ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-[#191a1c]/20 font-mono text-xs uppercase tracking-wider">
                   <span className="font-bold text-[#191a1c]">UPLOADED REPOSITORIES ({setups.length})</span>
                   <button
                     onClick={() => setIsAddModalOpen(true)}
-                    className="flex items-center gap-1.5 hover:underline font-bold"
+                    className="flex items-center gap-1.5 hover:underline font-bold text-[#191a1c]"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Upload New App</span>
@@ -371,6 +370,88 @@ export default function App() {
                       themeStyle={themeStyle}
                     />
                   ))}
+                </div>
+              </div>
+            ) : (
+              <div className={`p-8 sm:p-12 border transition-colors space-y-6 ${
+                isVintage
+                  ? 'bg-[#cfcfc4] border-[#191a1c] text-[#191a1c]'
+                  : 'bg-slate-900/80 border-slate-800 text-slate-100 rounded-3xl'
+              }`}>
+                <div className="max-w-2xl mx-auto text-center space-y-4">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-md ${
+                    isVintage ? 'bg-[#191a1c] text-[#dcdcd3]' : 'bg-indigo-600 text-white'
+                  }`}>
+                    <Plus className="w-8 h-8" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <h2 className={`text-xl sm:text-2xl font-black uppercase tracking-tight ${
+                      isVintage ? 'font-syne text-[#191a1c]' : 'text-slate-100'
+                    }`}>
+                      No Software Apps Published Yet
+                    </h2>
+                    <p className={`text-xs sm:text-sm font-mono leading-relaxed ${
+                      isVintage ? 'text-[#191a1c]/80' : 'text-slate-400'
+                    }`}>
+                      Publish and distribute your desktop installers (.exe, .dmg, .AppImage) directly through GitHub Releases CDN. Connect your GitHub repository to generate direct download links and track analytics.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                    <button
+                      onClick={() => setIsAddModalOpen(true)}
+                      className={`px-6 py-3.5 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-xl ${
+                        isVintage
+                          ? 'bg-[#191a1c] text-[#dcdcd3] hover:bg-[#2b2d31]'
+                          : 'bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl'
+                      }`}
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Upload Your First App</span>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab('guide')}
+                      className={`px-5 py-3.5 text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-colors ${
+                        isVintage
+                          ? 'border border-[#191a1c] text-[#191a1c] hover:bg-[#191a1c]/10'
+                          : 'bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl'
+                      }`}
+                    >
+                      <HelpCircle className="w-4 h-4" />
+                      <span>How to Upload</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Quick 3-Step Walkthrough */}
+                <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t ${
+                  isVintage ? 'border-[#191a1c]/20' : 'border-slate-800'
+                }`}>
+                  <div className={`p-4 border font-mono text-xs space-y-1.5 ${
+                    isVintage ? 'bg-[#dcdcd3] border-[#191a1c]/40 text-[#191a1c]' : 'bg-slate-950/60 border-slate-800 text-slate-300 rounded-xl'
+                  }`}>
+                    <div className="font-bold text-amber-600 dark:text-amber-400">STEP 01</div>
+                    <div className="font-bold">Create GitHub Release</div>
+                    <div className="text-[11px] opacity-80">Attach your compiled installer (.exe, .dmg, .AppImage) to a GitHub Release tag.</div>
+                  </div>
+
+                  <div className={`p-4 border font-mono text-xs space-y-1.5 ${
+                    isVintage ? 'bg-[#dcdcd3] border-[#191a1c]/40 text-[#191a1c]' : 'bg-slate-950/60 border-slate-800 text-slate-300 rounded-xl'
+                  }`}>
+                    <div className="font-bold text-amber-600 dark:text-amber-400">STEP 02</div>
+                    <div className="font-bold">Add Repo Details</div>
+                    <div className="text-[11px] opacity-80">Click "Upload Your First App" and input your repository owner and repo name.</div>
+                  </div>
+
+                  <div className={`p-4 border font-mono text-xs space-y-1.5 ${
+                    isVintage ? 'bg-[#dcdcd3] border-[#191a1c]/40 text-[#191a1c]' : 'bg-slate-950/60 border-slate-800 text-slate-300 rounded-xl'
+                  }`}>
+                    <div className="font-bold text-amber-600 dark:text-amber-400">STEP 03</div>
+                    <div className="font-bold">Instant Distribution</div>
+                    <div className="text-[11px] opacity-80">Your app card, download links, OS detection, and analytics are generated live!</div>
+                  </div>
                 </div>
               </div>
             )}
